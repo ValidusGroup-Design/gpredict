@@ -238,17 +238,16 @@ static void gpredict_app_create()
     /* restore window position and size if requested by config */
     /* trunk/gtk/gtkblist.c */
     /* size is always restored */
-    gtk_window_set_default_size(GTK_WINDOW(app),
-                                sat_cfg_get_int(SAT_CFG_INT_WINDOW_WIDTH),
-                                sat_cfg_get_int(SAT_CFG_INT_WINDOW_HEIGHT));
+    /* Force window size to match the touchscreen resolution */
+    //gtk_window_set_default_size(GTK_WINDOW(app), 800, 480);
 
-    /* position restored only if requested in config */
-    if (sat_cfg_get_bool(SAT_CFG_BOOL_MAIN_WIN_POS))
-    {
-        gtk_window_move(GTK_WINDOW(app),
-                        sat_cfg_get_int(SAT_CFG_INT_WINDOW_POS_X),
-                        sat_cfg_get_int(SAT_CFG_INT_WINDOW_POS_Y));
-    }
+    gtk_window_set_resizable(GTK_WINDOW(app), FALSE);
+    gtk_widget_set_size_request(app, 800, 480);
+
+    gtk_window_set_position(GTK_WINDOW(app), GTK_WIN_POS_CENTER);
+    /* Enable fullscreen mode */
+    gtk_window_fullscreen(GTK_WINDOW(app));
+
 
     gtk_container_add(GTK_CONTAINER(app), gui_create(app));
     if (g_file_test(icon, G_FILE_TEST_EXISTS))
